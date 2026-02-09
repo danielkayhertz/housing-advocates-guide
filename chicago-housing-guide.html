@@ -126,10 +126,53 @@
             max-width: calc(100% - 280px);
         }
 
+        /* Floating Header */
+        .floating-header {
+            position: sticky;
+            top: 0;
+            z-index: 55;
+            background: var(--ife-navy);
+            display: flex;
+            align-items: center;
+            min-height: 44px;
+            padding: 0 16px;
+            border-bottom: 3px solid var(--ife-sky);
+            gap: 12px;
+        }
+
+        .header-home-link {
+            display: flex;
+            align-items: center;
+            color: white;
+            opacity: 0.85;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+
+        .header-home-link:hover { opacity: 1; }
+
+        .header-location {
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .header-sep {
+            margin: 0 6px;
+            opacity: 0.5;
+        }
+
+        .header-section-name {
+            opacity: 0.85;
+        }
+
         /* Search Bar */
         .search-container {
             position: sticky;
-            top: 0;
+            top: 44px;
             background: var(--ife-off-white);
             padding: 12px 0 15px;
             z-index: 50;
@@ -287,22 +330,6 @@
 
         .content-view.active { display: block; }
 
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
-            font-size: 13px;
-            color: var(--ife-slate);
-        }
-
-        .breadcrumb a {
-            color: var(--ife-sky);
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover { text-decoration: underline; }
-
         .content-section {
             background: white;
             border-radius: 10px;
@@ -363,6 +390,88 @@
 
         .cross-ref:hover { color: #d9621a; }
 
+        /* Section Table of Contents */
+        .section-toc {
+            background: var(--ife-off-white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .section-toc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            cursor: pointer;
+            user-select: none;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--ife-navy);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-toc-header:hover { background: rgba(132,184,227,0.08); }
+
+        .toc-toggle-icon {
+            font-size: 12px;
+            transition: transform 0.2s;
+            color: var(--ife-slate);
+        }
+
+        .section-toc.toc-collapsed .toc-toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .section-toc-body {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 10px 16px;
+        }
+
+        .section-toc.toc-collapsed .section-toc-body {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .toc-group-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--ife-orange);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin: 10px 0 4px;
+        }
+
+        .toc-group-title:first-child { margin-top: 2px; }
+
+        .toc-subgroup-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--ife-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin: 8px 0 3px;
+            padding-left: 12px;
+        }
+
+        .toc-item {
+            display: block;
+            padding: 3px 0 3px 12px;
+            font-size: 13px;
+            color: var(--ife-sky);
+            cursor: pointer;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .toc-item:hover { color: var(--ife-orange); }
+
+        .toc-item.toc-indented { padding-left: 24px; }
+
         /* Group headers (intermediate hierarchy) */
         .group-header {
             color: var(--ife-orange);
@@ -406,6 +515,42 @@
             letter-spacing: 0.3px;
             padding-top: 8px;
             cursor: default;
+        }
+
+        /* Sidebar section collapse */
+        .nav-section-group {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .nav-section-group.expanded {
+            max-height: 5000px;
+        }
+
+        .nav-item.section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-item.section-header.active-section {
+            background: rgba(255,255,255,0.12);
+            border-left: 3px solid var(--ife-orange);
+        }
+
+        .nav-expand-icon {
+            font-size: 10px;
+            transition: transform 0.2s;
+            opacity: 0.6;
+            margin-right: 4px;
+            flex-shrink: 0;
+        }
+
+        .nav-section-group.expanded ~ .nav-item.section-header .nav-expand-icon,
+        .nav-item.section-header.active-section .nav-expand-icon {
+            transform: rotate(90deg);
+            opacity: 1;
         }
 
         /* Collapsible sections */
@@ -480,10 +625,11 @@
                 padding: 65px 18px 25px;
             }
             .section-cards { grid-template-columns: 1fr; }
+            .search-container { top: 44px; }
         }
 
         @media print {
-            .sidebar, .search-container, .mobile-toggle { display: none; }
+            .sidebar, .search-container, .mobile-toggle, .floating-header { display: none; }
             .main-content { margin-left: 0; max-width: 100%; }
         }
     </style>
@@ -506,6 +652,17 @@
             <div class="nav-section" id="nav-items"></div>
         </nav>
         <main class="main-content">
+            <div class="floating-header" id="floating-header">
+                <a href="#" class="header-home-link" onclick="showHome(); return false;" title="Home">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                </a>
+                <div class="header-location" id="header-location">
+                    Chicago Housing Advocates' Guide
+                </div>
+            </div>
             <div class="search-container">
                 <div class="search-wrapper">
                     <input type="text" class="search-input" id="search-input" placeholder="Search the guide..." autocomplete="off">
@@ -524,7 +681,6 @@
                 <div class="section-cards" id="section-cards"></div>
             </div>
             <div class="content-view" id="content-view">
-                <div class="breadcrumb" id="breadcrumb"></div>
                 <div id="content-area"></div>
             </div>
         </main>
@@ -628,9 +784,9 @@ const guideContent = {
             },
             "department-of-planning-and-development-dpd": {
                 title: "Department of Planning and Development (DPD)",
-                content: `<p><strong>Overview:</strong> The Department of Planning and Development (DPD) is the principal urban planning agency for the City of Chicago. In this role, DPD leads citywide planning efforts around neighborhood growth and sustainability, business and real estate development, historic preservation, accessible waterfronts, walkable districts, and other community improvements. Additionally, DPD administers the Chicago Zoning Code.</p>
-<p><strong>Programs:</strong> DPD encourages the redevelopment of public land by overseeing various development application processes, including the ChiBlockBuilder portal and Requests for Proposals (RFPs), Qualifications (RFQs), and Applications (RFAs). Additionally, DPD’s Planning Division develops and implements land use plans (both citywide and neighborhood-specific) and assists the Zoning Bureau with design review on planned developments. Relatedly, the Department’s Zoning Ordinance Administration Division reviews building permit applications to ensure neighborhood development conforms to the Chicago Municipal Code, local planning goals, and industry best practices. DPD also works to promote small business development via financial assistance programs (e.g. Workforce Solutions, Property Tax Incentives) and grants (e.g. Community Development Grants, Neighborhood Opportunity Fund, Small Business Improvement Fund). DPD’s Historic Preservation Division prepares landmark designation reports; reviews permit applications for designated landmarks; maintains the Chicago Historic Resources Survey; administers the Demolition Delay Ordinance; and otherwise preserves historic buildings through incentives, preservation planning, and technical assistance.</p>
-<p><strong>Governance:</strong> DPD’s power derives from the <a href="https://codelibrary.amlegal.com/codes/chicago/latest/chicagozoning_il/0-0-0-52099">Municipal Code of Chicago, Chapter 17-14, “Department of Planning and Development,”</a> as established and amended by the Chicago City Council. Likewise, DPD appropriations and spending authority are granted by the City Council. The Department is led by a Commissioner, who is appointed by the Mayor and confirmed by the City Council.</p>
+                content: `<p><strong>Overview:</strong> The Department of Planning and Development (DPD) is the principal urban planning agency for the City of Chicago. In this role, DPD leads citywide planning efforts around neighborhood growth and sustainability, business and real estate development, historic preservation, accessible waterfronts, walkable districts, and other community improvements. Additionally, DPD administers the Chicago Zoning Code.</p>
+<p><strong>Programs:</strong> DPD encourages the redevelopment of public land by overseeing various development application processes, including the ChiBlockBuilder portal and Requests for Proposals (RFPs), Qualifications (RFQs), and Applications (RFAs). Additionally, DPD’s Planning Division develops and implements land use plans (both citywide and neighborhood-specific) and assists the Zoning Bureau with design review on planned developments. Relatedly, the Department’s Zoning Ordinance Administration Division reviews building permit applications to ensure neighborhood development conforms to the Chicago Municipal Code, local planning goals, and industry best practices. DPD also works to promote small business development via financial assistance programs (e.g. Workforce Solutions, Property Tax Incentives) and grants (e.g. Community Development Grants, Neighborhood Opportunity Fund, Small Business Improvement Fund). DPD’s Historic Preservation Division prepares landmark designation reports; reviews permit applications for designated landmarks; maintains the Chicago Historic Resources Survey; administers the Demolition Delay Ordinance; and otherwise preserves historic buildings through incentives, preservation planning, and technical assistance.</p>
+<p><strong>Governance:</strong> DPD’s power derives from the <a href="https://codelibrary.amlegal.com/codes/chicago/latest/chicagozoning_il/0-0-0-52099">Municipal Code of Chicago, Chapter 17-14, “Department of Planning and Development,”</a> as established and amended by the Chicago City Council. Likewise, DPD appropriations and spending authority are granted by the City Council. The Department is led by a Commissioner, who is appointed by the Mayor and confirmed by the City Council.</p>
 <p><strong>For more information about DPD, visit:</strong> <a href="http://chicago.gov/dpd">chicago.gov/dpd</a></p>`
             },
             "department-of-buildings-dob": {
@@ -663,10 +819,10 @@ const guideContent = {
             },
             "department-of-the-environment-doe": {
                 title: "Department of the Environment (DOE)",
-                content: `<p><strong>Overview:</strong> The Department of Environment (DOE) advances the City’s environmental justice priorities, including mitigating climate change, alleviating environmental harm across Chicago neighborhoods, and leveraging green economy wealth building opportunities. DOE is tasked with implementing the City’s Climate Action Plan, coordinating climate and sustainability efforts, and securing State Green infrastructure funding. DOE also manages environmental permitting and inspection services; provides environmental engineering services; and oversees the National Environmental Policy Act for federally funded projects, including developments affiliated with the <span class="cross-ref" data-target="cha">Chicago Housing Authority (CHA)</span> and the U.S. Department of Housing and Urban Development (HUD).</p>
-<p><strong>Programs:</strong> In collaboration with <span class="cross-ref" data-target="doh">DOH</span>, DOE runs Green Homes Chicago, a program that provides free home energy upgrades and energy efficiency retrofits (e.g. new insulation, heat pump heating and cooling systems) to households earning up to 80% area median income (AMI). Other DOE programs and initiatives include Our Roots Chicago (expanding the tree canopy throughout City neighborhoods), Chi100 (expanding clean energy solutions, e.g. powering City buildings and streetlights via renewable energy), Chicago Energy Benchmarking (tracks large buildings’ energy use, helps building owners understand their energy consumption and discover cost savings opportunities).</p>
-<p><strong>Governance: </strong>DOE’s power derives from the <a href="https://codelibrary.amlegal.com/codes/chicago/latest/chicago_il/0-0-0-2699517">Municipal Code of Chicago, Chapter 2-31, “Department of the Environment,”</a> as established and amended by the Chicago City Council. Likewise, DOE appropriations and spending authority are granted by the City Council. The Department is led by a Commissioner, titled the Chief Sustainability Officer, who is appointed by the Mayor and confirmed by the City Council.</p>
-<p><strong>For more information about DOE, visit: </strong><a href="https://www.chicago.gov/city/en/depts/env.html">DOE’s webpage</a> on the City of Chicago website and Chicago’s <a href="https://www.chicago.gov/city/en/sites/climate-action-plan/home.html">Climate Action Plan</a>.</p>`
+                content: `<p><strong>Overview:</strong> The Department of Environment (DOE) advances the City’s environmental justice priorities, including mitigating climate change, alleviating environmental harm across Chicago neighborhoods, and leveraging green economy wealth building opportunities. DOE is tasked with implementing the City’s Climate Action Plan, coordinating climate and sustainability efforts, and securing State Green infrastructure funding. DOE also manages environmental permitting and inspection services; provides environmental engineering services; and oversees the National Environmental Policy Act for federally funded projects, including developments affiliated with the <span class="cross-ref" data-target="cha">Chicago Housing Authority (CHA)</span> and the U.S. Department of Housing and Urban Development (HUD).</p>
+<p><strong>Programs:</strong> In collaboration with <span class="cross-ref" data-target="doh">DOH</span>, DOE runs Green Homes Chicago, a program that provides free home energy upgrades and energy efficiency retrofits (e.g. new insulation, heat pump heating and cooling systems) to households earning up to 80% area median income (AMI). Other DOE programs and initiatives include Our Roots Chicago (expanding the tree canopy throughout City neighborhoods), Chi100 (expanding clean energy solutions, e.g. powering City buildings and streetlights via renewable energy), Chicago Energy Benchmarking (tracks large buildings’ energy use, helps building owners understand their energy consumption and discover cost savings opportunities).</p>
+<p><strong>Governance:</strong> DOE’s power derives from the <a href="https://codelibrary.amlegal.com/codes/chicago/latest/chicago_il/0-0-0-2699517">Municipal Code of Chicago, Chapter 2-31, “Department of the Environment,”</a> as established and amended by the Chicago City Council. Likewise, DOE appropriations and spending authority are granted by the City Council. The Department is led by a Commissioner, titled the Chief Sustainability Officer, who is appointed by the Mayor and confirmed by the City Council.</p>
+<p><strong>For more information about DOE, visit: </strong><a href="https://www.chicago.gov/city/en/depts/env.html">DOE’s webpage</a> on the City of Chicago website and Chicago’s <a href="https://www.chicago.gov/city/en/sites/climate-action-plan/home.html">Climate Action Plan</a>.</p>`
             },
             "mayors-office": {
                 title: "Mayor’s Office",
@@ -707,8 +863,7 @@ const guideContent = {
             "chicago-housing-authority-cha": {
                 title: "Chicago Housing Authority (CHA)",
                 content: `<p><strong>Overview:</strong> The Chicago Housing Authority (CHA) is a municipal agency tasked with providing housing assistance to low-income individuals and families across the city, including veterans, the elderly, people with disabilities, and individuals in need of supportive housing services. CHA oversees a portfolio of public and mixed-income housing, as well as vouchers that provide subsidies to tenants living in private housing. Approximately one in every 20 Chicagoans—around 135,000 people and 65,000 households—live in CHA-owned public housing or receive vouchers from CHA to rent on the private market.</p>
-<p><strong>Programs:</strong> The CHA oversees the local administration of several programs funded by the U.S. Department of Housing and Urban Development (HUD), including the most historically well-known form of public housing: <span class="cross-ref" data-target="section-9">Section 9</span> developments directly owned and operated by public housing authorities (PHAs) across the country. However, it is the CHA’s <span class="cross-ref" data-target="section-8">Section 8</span> programs that have made up almost all of the city’s public housing expansion in recent decades. <span class="cross-ref" data-target="section-8">Section 8</span> consists of Project-Based Vouchers (where the CHA contracts with a private landlord to subsidize the rent of a specific housing unit) and Housing Choice Vouchers (where the rental subsidy follows the voucher-holder to any housing accommodation they rent on the private market). The Rental Assistance Demonstration Program (<span class="cross-ref" data-target="rad">RAD</span>) allows housing authorities and HUD-assisted properties to convert traditional public housing (<span class="cross-ref" data-target="section-9">Section 9</span>) into the more commonly used project-based vouchers. Similarly, Restore-Rebuild</p>
-<p>(formerly “Faircloth to <span class="cross-ref" data-target="rad">RAD</span>”) makes it possible for housing authorities to build or acquire new housing, designate that development as public housing, and then execute a <span class="cross-ref" data-target="rad">RAD</span> conversion.</p>
+<p><strong>Programs:</strong> The CHA oversees the local administration of several programs funded by the U.S. Department of Housing and Urban Development (HUD), including the most historically well-known form of public housing: <span class="cross-ref" data-target="section-9">Section 9</span> developments directly owned and operated by public housing authorities (PHAs) across the country. However, it is the CHA’s <span class="cross-ref" data-target="section-8">Section 8</span> programs that have made up almost all of the city’s public housing expansion in recent decades. <span class="cross-ref" data-target="section-8">Section 8</span> consists of Project-Based Vouchers (where the CHA contracts with a private landlord to subsidize the rent of a specific housing unit) and Housing Choice Vouchers (where the rental subsidy follows the voucher-holder to any housing accommodation they rent on the private market). The Rental Assistance Demonstration Program (<span class="cross-ref" data-target="rad">RAD</span>) allows housing authorities and HUD-assisted properties to convert traditional public housing (<span class="cross-ref" data-target="section-9">Section 9</span>) into the more commonly used project-based vouchers. Similarly, Restore-Rebuild (formerly “Faircloth to <span class="cross-ref" data-target="rad">RAD</span>”) makes it possible for housing authorities to build or acquire new housing, designate that development as public housing, and then execute a <span class="cross-ref" data-target="rad">RAD</span> conversion.</p>
 <p><strong>Governance</strong>: The Board of Commissioners and the Office of the Inspector General provide oversight of the CHA. Commissioners are appointed by and accountable to the Mayor.</p>
 <p><strong>For more information about the CHA, visit:</strong> <a href="https://www.thecha.org/">thecha.org</a> and the CHA Data &amp; Impact Hub</p>`
             },
@@ -779,7 +934,7 @@ const guideContent = {
                 title: "Governor’s Office",
                 content: `<p><strong>Overview:</strong> The governor’s office oversees state agencies and departments and the implementation of Illinois laws. In collaboration with the Illinois General Assembly, the governor’s office is involved in setting Illinois’ policy agenda and the state’s annual budget. Additionally, the governor’s office assists the governor in carrying out their powers and duties, including making executive orders, appointing officials, and proposing or vetoing legislation. The governor also acts as Illinois' intergovernmental liaison to the federal government.</p>
 <p>In 2025, the governor’s office created a Director of Housing Solutions position. Under Governor Pritzker, this position focuses largely on “missing middle” housing. Missing middle housing (e.g. duplexes or fourplexes, multiplexes, townhouses, etc.) is a type of housing similar in scale and form to detached single family homes, but with multiple units, located in walkable communities. Additionally, in 2021, the Governor’s Office created a Chief Homelessness Officer, tasked with leading the state’s policy efforts to prevent and end homelessness. The Chief Homelessness Officer serves as the chair of the Interagency Task Force on Homelessness and the co-chair of the Community Advisory Council on Homelessness.</p>
-<p><strong>Governance:</strong> The governor derives power from the Illinois Constitution, Article V, <span class="cross-ref" data-target="section-8">Section 8</span>.</p>
+<p><strong>Governance:</strong> The governor derives power from the Illinois Constitution, Article V, Section 8.</p>
 <p><strong>For more information about the Governor’s Office, visit:</strong> <a href="https://gov.illinois.gov/">gov.illinois.gov</a> and the <a href="https://gov.illinois.gov/content/dam/soi/en/web/gov/documents/ad-hoc-committee-report.pdf">Report of the Governor’s Ad-Hoc Missing Middle Housing Solutions Advisory Committee</a></p>`
             },
             "illinois-general-assembly": {
@@ -840,13 +995,13 @@ const guideContent = {
             },
             "low-income-housing-tax-credit-lihtc": {
                 title: "Low Income Housing Tax Credit (LIHTC)",
-                content: `<p>For over three decades, the Low Income Housing Tax Credit (LIHTC) has served as the primary federal funding source used to develop and rehabilitate affordable housing in the United States—supporting approximately 90% of all affordable housing in the country.</p>
-<p>Under the LIHTC program, state housing finance agencies and three cities (Chicago, New York, and D.C.) receive LIHTC allocations from the Internal Revenue Service according to population size. State agencies (in Illinois, the Illinois Housing Development Authority, or <span class="cross-ref" data-target="ihda">IHDA</span>) or cities (in Chicago, the Department of Housing, or <span class="cross-ref" data-target="doh">DOH</span>) then award the tax credits to proposed affordable housing projects. These projects are selected based on the jurisdiction’s Qualified Allocation Plan (QAP), a federally required document that outlines affordable housing priorities in the region.</p>
-<p>In Illinois, 75% of the state’s LIHTC allocation is awarded by <span class="cross-ref" data-target="ihda">IHDA</span>, while 25% is awarded by <span class="cross-ref" data-target="doh">DOH</span>. The vast majority of <span class="cross-ref" data-target="ihda">IHDA</span>’s awards are made outside the City of Chicago, though each round a handful of <span class="cross-ref" data-target="ihda">IHDA</span> awards go to projects in the city. <span class="cross-ref" data-target="ihda">IHDA</span> makes LIHTC awards annually, while <span class="cross-ref" data-target="doh">DOH</span> does so every two years.</p>
-<p>There are two types of LIHTC tax credits: 9% and 4%. The 9% tax credit typically supports new housing construction and is designed to cover approximately 70% of construction costs, whereas the 4% tax credit is generally used for building rehabilitation projects and covers roughly 30% of construction costs. In exchange for these tax credits, developers generally commit a project to at least 30 years of affordable housing.</p>
-<p>Since LIHTC does not cover 100% of construction costs, so-called “gap financing” is required to fully fund projects receiving the tax credit. Gap financing often takes the form of funds from HOME, Community Development Block Grant allocations, Tax Increment Financing, or, for <span class="cross-ref" data-target="doh">DOH</span> awards, Housing and Economic Development Bond proceeds, among many other options. As a result, the building finances of LIHTC projects are often quite complicated, with a dozen or more different financing sources in some cases.</p>
-<p>For more information on <span class="cross-ref" data-target="ihda">IHDA</span> LIHTC allocations, visit the following pages on <span class="cross-ref" data-target="ihda">IHDA</span>’s website: <a href="https://www.ihda.org/developers/tax-credits/low-income-tax-credit/">Low Income Housing Tax Credit</a> and <a href="https://www.ihda.org/developers/qap/">Qualified Allocation Plan (QAP)</a></p>
-<p>For more information on <span class="cross-ref" data-target="doh">DOH</span> LIHTC allocations, visit: the <a href="https://www.chicago.gov/city/en/depts/doh/supp_info/2025-qualified-allocation-plan.html">City’s webpage for the 2025 QAP</a> and <a href="https://www.chicago.gov/content/dam/city/depts/doh/qap/qap_2021/2021_REIA_QAP.pdf"><span class="cross-ref" data-target="doh">DOH</span>’s racial equity impact assessment</a> (2021)</p>`
+                content: `<p>For over three decades, the Low Income Housing Tax Credit (LIHTC) has served as the primary federal funding source used to develop and rehabilitate affordable housing in the United States—supporting approximately 90% of all affordable housing in the country.</p>
+<p>Under the LIHTC program, state housing finance agencies and three cities (Chicago, New York, and D.C.) receive LIHTC allocations from the Internal Revenue Service according to population size. State agencies (in Illinois, the Illinois Housing Development Authority, or <span class="cross-ref" data-target="ihda">IHDA</span>) or cities (in Chicago, the Department of Housing, or <span class="cross-ref" data-target="doh">DOH</span>) then award the tax credits to proposed affordable housing projects. These projects are selected based on the jurisdiction’s Qualified Allocation Plan (QAP), a federally required document that outlines affordable housing priorities in the region.</p>
+<p>In Illinois, 75% of the state’s LIHTC allocation is awarded by <span class="cross-ref" data-target="ihda">IHDA</span>, while 25% is awarded by <span class="cross-ref" data-target="doh">DOH</span>. The vast majority of <span class="cross-ref" data-target="ihda">IHDA</span>’s awards are made outside the City of Chicago, though each round a handful of <span class="cross-ref" data-target="ihda">IHDA</span> awards go to projects in the city. <span class="cross-ref" data-target="ihda">IHDA</span> makes LIHTC awards annually, while <span class="cross-ref" data-target="doh">DOH</span> does so every two years.</p>
+<p>There are two types of LIHTC tax credits: 9% and 4%. The 9% tax credit typically supports new housing construction and is designed to cover approximately 70% of construction costs, whereas the 4% tax credit is generally used for building rehabilitation projects and covers roughly 30% of construction costs. In exchange for these tax credits, developers generally commit a project to at least 30 years of affordable housing.</p>
+<p>Since LIHTC does not cover 100% of construction costs, so-called “gap financing" is required to fully fund projects receiving the tax credit. Gap financing often takes the form of funds from HOME, Community Development Block Grant allocations, Tax Increment Financing, or, for <span class="cross-ref" data-target="doh">DOH</span> awards, Housing and Economic Development Bond proceeds, among many other options. As a result, the building finances of LIHTC projects are often quite complicated, with a dozen or more different financing sources in some cases.</p>
+<p>For more information on <span class="cross-ref" data-target="ihda">IHDA</span> LIHTC allocations, visit the following pages on <span class="cross-ref" data-target="ihda">IHDA</span>’s website: <a href="https://www.ihda.org/developers/tax-credits/low-income-tax-credit/">Low Income Housing Tax Credit</a> and <a href="https://www.ihda.org/developers/qap/">Qualified Allocation Plan (QAP)</a></p>
+<p>For more information on <span class="cross-ref" data-target="doh">DOH</span> LIHTC allocations, visit: the <a href="https://www.chicago.gov/city/en/depts/doh/supp_info/2025-qualified-allocation-plan.html">City’s webpage for the 2025 QAP</a> and <a href="https://www.chicago.gov/content/dam/city/depts/doh/qap/qap_2021/2021_REIA_QAP.pdf"><span class="cross-ref" data-target="doh">DOH</span>’s racial equity impact assessment</a> (2021)</p>`
             },
             "community-development-block-grant-cdbg": {
                 title: "Community Development Block Grant (CDBG)",
@@ -860,8 +1015,8 @@ const guideContent = {
             },
             "illinois-affordable-housing-trust-fund": {
                 title: "Illinois Affordable Housing Trust Fund",
-                content: `<p>The Illinois Affordable Housing Trust Fund provides grants and loans to support the development and preservation of affordable housing across the state. Administered by the <span class="cross-ref" data-target="ihda">Illinois Housing Development Authority (IHDA)</span>, the Trust Fund finances a wide variety of affordable housing activity, including new construction of single- and multi-family homes, the acquisition and rehabilitation of existing housing, specific housing needs for certain populations (e.g. disabled, elderly, etc.), and adaptive reuse of non-residential buildings.</p>
-<p>Additionally, the Trust funds a grant program that provides technical assistance around building capacity and sustainability in local communities (called the Land Bank Technical Assistance Network). Prospective Trust projects are first reviewed by the Illinois Affordable Housing Trust Fund Advisory Commission (a committee appointed by the Governor to guide, develop, and monitor <span class="cross-ref" data-target="ihda">IHDA</span>’s affordable housing programs and use of funds), before being sent to <span class="cross-ref" data-target="ihda">IHDA</span>’s Board for approval. The Trust is funded by the state and in 2022 received approximately $60 million.</p>`
+                content: `<p>The Illinois Affordable Housing Trust Fund provides grants and loans to support the development and preservation of affordable housing across the state. Administered by the <span class="cross-ref" data-target="ihda">Illinois Housing Development Authority (IHDA)</span>, the Trust Fund finances a wide variety of affordable housing activity, including new construction of single- and multi-family homes, the acquisition and rehabilitation of existing housing, specific housing needs for certain populations (e.g. disabled, elderly, etc.), and adaptive reuse of non-residential buildings.</p>
+<p>Additionally, the Trust funds a grant program that provides technical assistance around building capacity and sustainability in local communities (called the Land Bank Technical Assistance Network). Prospective Trust projects are first reviewed by the Illinois Affordable Housing Trust Fund Advisory Commission (a committee appointed by the Governor to guide, develop, and monitor <span class="cross-ref" data-target="ihda">IHDA</span>’s affordable housing programs and use of funds), before being sent to <span class="cross-ref" data-target="ihda">IHDA</span>’s Board for approval. The Trust is funded by the state and in 2022 received approximately $60 million.</p>`
             },
             "illinois-affordable-housing-tax-credits-donation-t": {
                 title: "Illinois Affordable Housing Tax Credits (Donation Tax Credits)",
@@ -900,8 +1055,8 @@ const guideContent = {
 </ul>
 <p><strong>Key provisions:</strong></p>
 <ul>
-<li>When Qualified Housing Choice Voucher (HCV) and public housing families use their subsidy to buy a home, the household receives monthly assistance with a portion of their mortgage payment. Working head of households receive assistance for up to 15 years, while people over 62 and heads of household with a disability receive assistance for up to 30 years.</li>
-<li>CTO also provides referrals to pre- and post-purchase homebuyer education, credit counseling, real estate and lending professionals, and other services to help program participants through the homebuying process.</li>
+<li>When qualified Housing Choice Voucher (HCV) and public housing families use their subsidy to buy a home, the household receives monthly assistance with a portion of their mortgage payment. WOrking head of households receive assistance for up to 15 years, while people over 62 and heads of household with a disability receive assistance for up to 30 years.</li>
+<li>CTO also provides referrals to pre- and post-purchase homebuyer education, credit counseling, real estate and lending professionals, and other services to help program participants through the homebuying process.</li>
 </ul>
 <p><strong>Funded by:</strong> Federal Housing Assistance Payments</p>
 <p><strong>Administered by</strong>: Chicago Housing Authority</p>`
@@ -916,16 +1071,16 @@ const guideContent = {
             },
             "missing-middle-infill-initiative": {
                 title: "Missing Middle Infill Initiative",
-                content: `<p><strong>Program summary:</strong> The Missing Middle Infill Housing Initiative leverages City land and financing to build new residential construction for market-rate buyers. The program is a community improvement strategy that aims to address decades of systemic disinvestment that resulted in vacant lots and “missing” middle-density buildings on Chicago’s South and West sides.</p>
+                content: `<p><strong>Program summary:</strong> The Missing Middle Infill Housing Initiative leverages City land and financing to build new residential construction for market-rate buyers. The program is a community improvement strategy that aims to address decades of systematic disinvestment that resulted in vacant lots and "missing" middle-density buildings on Chicago's South and West sides.</p>
 <p><strong>Key provisions: </strong></p>
 <ul>
-<li>Prospective private developers must submit applications through the City’s land use portal, ChiBlockBuilder.</li>
-<li>City lots are sold to housing developers in clusters. Each lot is sold for the nominal price of one dollar. The City also offers up to $150,000 in construction assistance.</li>
-<li>Developers construct new homes on the land they purchase from the City, and then sell those properties to market-rate buyers for owner-occupancy. The purchase price of the homes under Missing Middle must be affordable for households earning 140% area median income (AMI).</li>
-<li>The <span class="cross-ref" data-target="aro">Affordable Requirements Ordinance (ARO)</span> does not apply to Missing Middle projects.</li>
+<li>Prospective private developers must submit applications through the City's land use portal, ChiBlockBuilder.</li>
+<li>City lots are sold to housing developers in clusters. Each lot is sold for the nominal price of one dollar. The City also offers up to $150,000 in construction assistance.</li>
+<li>Developers construct new homes on the land they purchase from the City, and then sell those properties to market-rate buyers for owner-occupancy. The purchase price of the homes under Missing Middle must be affordable for households earning 140% area median income (AMI).</li>
+<li>The <span class="cross-ref" data-target="aro">Affordable Requirements Ordinance (ARO)</span> does not apply to Missing Middle projects.</li>
 </ul>
-<p><strong>Funded by:</strong> Housing and Economic Development Bond</p>
-<p><strong>Administered by:</strong> <span class="cross-ref" data-target="dpd">Department of Planning and Development (DPD)</span></p>`
+<p><strong>Funded by:</strong> Housing and Economic Development Bond</p>
+<p><strong>Administered by: </strong><span class="cross-ref" data-target="dpd">Department of Planning and Development (DPD)</span></p>`
             },
             "homegrown-purchase-assistance-grant-program": {
                 title: "HomeGrown Purchase Assistance Grant Program",
@@ -1368,28 +1523,28 @@ const guideContent = {
             "anti-displacement-ordinances": {
                 title: "Anti-Displacement Ordinances",
                 content: `<p>In response to concerns about gentrification and displacement of long-term residents, particularly those with low and moderate incomes, City Council passed the following ordinances, designed to preserve affordability and housing diversity in specific neighborhoods of Chicago.</p>
-<p><strong>1.</strong> <a href="https://www.chicago.gov/city/en/depts/doh/supp_info/woodlawn-housing-ordinance.html">Woodlawn Housing Preservation Ordinance</a><strong> (</strong><a href="https://chicityclerkelms.chicago.gov/Matter/?matterId=A548EFF0-E10D-ED11-82E3-001DD80698CB">O2020-3987</a><strong>): </strong>Enacted in 2020 to address gentrification concerns arising from the development of the Obama Presidential Center, this ordinance includes the following key provisions:</p>
+<p><strong>1.</strong> <a href="https://www.chicago.gov/city/en/depts/doh/supp_info/woodlawn-housing-ordinance.html">Woodlawn Housing Preservation Ordinance</a><strong> (</strong><a href="https://chicityclerkelms.chicago.gov/Matter/?matterId=A548EFF0-E10D-ED11-82E3-001DD80698CB">O2020-3987</a><strong>): </strong>Enacted in 2020 to address gentrification concerns arising from the development of the Obama Presidential Center, this ordinance includes the following key provisions:</p>
 <ul>
 <li>Requires 30% of units developed on certain City-owned land to be affordable at 30-50% area median income (AMI).</li>
 <li>Appropriates approximately $5 million for preservation and rehabilitation efforts.</li>
-<li>Tenant Right of First Refusal Pilot – for buildings with 10 or more units, gives tenants the right to work with a non-profit affordable developer to purchase prior to a third-party sale.</li>
+<li>Tenant Right of First Refusal Pilot – for buildings with 10 or more units, gives tenants the right to work with a non-profit affordable developer to purchase prior to a third-party sale.</li>
 </ul>
 <p><strong>2. Jackson Park Housing Pilot Ordinance (</strong><a href="https://chicityclerkelms.chicago.gov/Matter/?matterId=66D3EE3D-E050-EE11-BE6E-001DD8097F7D">SO2023-0004085</a><strong>)</strong>: Enacted in 2025 to expand the areas protected from gentrification by the Obama Presidential Center to include Jackson Park and South Shore. Key provisions include:</p>
 <ul>
 <li>Reserves 30 city-owned lots in Jackson Park and South Shore for affordable housing development, including a Right to Return Preference for residents who have been displaced from these areas since 2015.</li>
-<li>Creates a Property Tax Debt Relief Grant Pilot Program to assist long-term homeowners manage property tax debt.</li>
+<li>Creates a Property Tax Debt Relief Grant Pilot Program to assist long-term homeowners manage property tax debt.</li>
 <li>Creates the Chicago Rebuild Jackson Park Pilot to support rehabilitation of vacant properties with affordable housing developments.</li>
 <li>Implements an Expanded Fair Notice Pilot to give extended written notices of non-renewals (up to 180 days) to long-term residents.</li>
 <li>Expands the Tenant Right of First Refusal Pilot to include Jackson Park and South Shore.</li>
 </ul>
-<p><strong>3. 606-Pilsen Demolition Permit Surcharge Ordinance (</strong><a href="https://chicityclerkelms.chicago.gov/Matter/?matterId=643BE2FC-E10D-ED11-82E3-001DD80698CB">O2021-746</a><strong>):</strong> Enacted in 2021 and extended in 2024, this ordinance requires applicants seeking a demolition permit for buildings containing residential units near portions of <a href="https://www.chicago.gov/content/dam/city/depts/doh/dpspa/Demolition-Permit-Surcharge-Pilot-Area-606.pdf">the 606 Trail</a> and <a href="https://www.chicago.gov/content/dam/city/depts/doh/dpspa/Demolition-Permit-Surcharge-Pilot-Area-Pilsen.pdf">Pilsen</a> to pay a per unit surcharge. Key provisions include:</p>
+<p><strong>3. 606-Pilsen Demolition Permit Surcharge Ordinance (</strong><a href="https://chicityclerkelms.chicago.gov/Matter/?matterId=643BE2FC-E10D-ED11-82E3-001DD80698CB">O2021-746</a><strong>):</strong> Enacted in 2021 and extended in 2024, this ordinance requires applicants seeking a demolition permit for buildings containing residential units near portions of <a href="https://www.chicago.gov/content/dam/city/depts/doh/dpspa/Demolition-Permit-Surcharge-Pilot-Area-606.pdf">the 606 Trail</a> and <a href="https://www.chicago.gov/content/dam/city/depts/doh/dpspa/Demolition-Permit-Surcharge-Pilot-Area-Pilsen.pdf">Pilsen</a> to pay a per unit surcharge. Key provisions include:</p>
 <ul>
-<li>Applicants must complete a <a href="https://www.chicago.gov/content/dam/city/depts/doh/general/Form_483_rev_03292021_Dwelling_Unit_Demolition_Surcharge.pdf">Dwelling Unit Demolition Surcharge form</a>.</li>
+<li>Applicants must complete a <a href="https://www.chicago.gov/content/dam/city/depts/doh/general/Form_483_rev_03292021_Dwelling_Unit_Demolition_Surcharge.pdf">Dwelling Unit Demolition Surcharge form</a>.</li>
 <li>Surcharge is equal to $60,000 per building or $20000 per unit demolished, whichever is greater.</li>
 <li>Funds go to the Chicago Community Land Trust.</li>
 </ul>
-<p><strong>4. 606 and Pilsen Anti-Deconversion Ordinances (</strong><a href="https://chicityclerkelms.chicago.gov/Matter/?matterId=63478CF8-E10D-ED11-82E3-001DD80693B4">SO2020-6206</a><strong> and</strong> <a href="https://chicityclerkelms.chicago.gov/Matter/?matterId=33478CF8-E10D-ED11-82E3-001DD80693B4">SO2020-6207</a><strong>):</strong> Enacted in 2021, these zoning provisions aim to preserve two-to-six-unit buildings in two neighborhoods. The 606 ordinance creates a “predominance of the block” standard by permitting two-flats and single-family homes only on blocks that contain a majority of that type of housing stock in RS-3 (single-family) zones. The Pilsen ordinance creates a “multi-unit preservation overlay,” prohibiting single-family homes in RT and RM (multifamily) zones.</p>
-<p><strong>5. Northwest Side Preservation Ordinance (</strong><a href="https://chicityclerkelms.chicago.gov/Matter/?matterId=C3F5E354-5F44-EF11-8409-001DD8306DF0">SO2024-0011001</a><strong>):</strong> Enacted in 2024 to increase the surcharge originally implemented under the 606-Pilsen Demolition Permit Surcharge Ordinance (from the greater of $15,000 per building or $5,000 per unit to $60,000 per building and $20,000 per unit) and amended the boundaries of the 606 Anti-Deconversion Ordinance to include <a href="https://www.chicago.gov/content/dam/city/depts/doh/NorthwestSidePreservationOrdinance/8-25/Boundaries_of_606_8x11_18AUG2025.pdf">areas of Avondale, Hermosa, Humboldt Park, Logan Square, and West Town</a>. The ordinance also creates a Tenant Opportunity to Purchase (606) Block Pilot Program, giving tenants in those areas a right of first refusal on sales of residential properties.</p>`
+<p><strong>4. 606 and Pilsen Anti-Deconversion Ordinances (</strong><a href="https://chicityclerkelms.chicago.gov/Matter/?matterId=63478CF8-E10D-ED11-82E3-001DD80693B4">SO2020-6206</a><strong> and</strong> <a href="https://chicityclerkelms.chicago.gov/Matter/?matterId=33478CF8-E10D-ED11-82E3-001DD80693B4">SO2020-6207</a><strong>):</strong> Enacted in 2021, these zoning provisions aim to preserve two-to-six-unit buildings in two neighborhoods. The 606 ordinance creates a “predominance of the block” standard by permitting two-flats and single-family homes only on blocks that contain a majority of that type of housing stock in RS-3 (single-family) zones. The Pilsen ordinance creates a “multi-unit preservation overlay,” prohibiting single-family homes in RT and RM (multifamily) zones.</p>
+<p><strong>5. Northwest Side Preservation Ordinance (</strong><a href="https://chicityclerkelms.chicago.gov/Matter/?matterId=C3F5E354-5F44-EF11-8409-001DD8306DF0">SO2024-0011001</a><strong>):</strong> Enacted in 2024 to increase the surcharge originally implemented under the 606-Pilsen Demolition Permit Surcharge Ordinance (from the greater of $15,000 per building or $5,000 per unit to $60,000 per building and $20,000 per unit) and amended the boundaries of the 606 Anti-Deconversion Ordinance to include <a href="https://www.chicago.gov/content/dam/city/depts/doh/NorthwestSidePreservationOrdinance/8-25/Boundaries_of_606_8x11_18AUG2025.pdf">areas of Avondale, Hermosa, Humboldt Park, Logan Square, and West Town</a>. The ordinance also creates a Tenant Opportunity to Purchase (606) Block Pilot Program, giving tenants in those areas a right of first refusal on sales of residential properties.</p>`
             },
             "cut-the-tape-ordinances": {
                 title: "Cut the Tape Ordinances",
@@ -1984,12 +2139,15 @@ const sectionGroups = {
 
 // Chicago Housing Advocates' Guide - Application Logic
 
+let currentSectionId = null;
+
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
     renderSectionCards();
     renderNavigation();
     setupSearch();
     setupCrossReferences();
+    setupScrollSpy();
 });
 
 // Render home page cards
@@ -2007,57 +2165,78 @@ function renderSectionCards() {
 }
 
 // Render sidebar navigation
-function renderNavigation() {
+function renderNavigation(activeSectionId) {
     const container = document.getElementById('nav-items');
     let html = '';
 
     for (const [sectionId, section] of Object.entries(guideContent)) {
-        html += `<div class="nav-item section-header" onclick="navigateToSection('${sectionId}')">${section.title}</div>`;
+        const isActive = sectionId === activeSectionId;
+        const activeClass = isActive ? ' active-section' : '';
+        html += `<div class="nav-item section-header${activeClass}" onclick="navigateToSection('${sectionId}')">
+            <span>${section.title}</span>
+            <span class="nav-expand-icon">\u25B8</span>
+        </div>`;
 
         if (section.subsections) {
-            // Build group start map and sub-group start map for sidebar labels
-            const groups = sectionGroups[sectionId];
-            const groupStartMap = {};
-            const subGroupStartMap = {};
-            if (groups) {
-                for (const group of groups) {
-                    if (group.subsectionKeys.length > 0) {
-                        groupStartMap[group.subsectionKeys[0]] = group.title;
-                    }
-                    if (group.subgroups) {
-                        for (const sg of group.subgroups) {
-                            if (sg.subsectionKeys.length > 0) {
-                                // First subgroup key also triggers the parent group label
-                                subGroupStartMap[sg.subsectionKeys[0]] = sg.title;
+            const expandedClass = isActive ? ' expanded' : '';
+            html += `<div class="nav-section-group${expandedClass}">`;
+
+            if (isActive) {
+                // Build group start map and sub-group start map for sidebar labels
+                const groups = sectionGroups[sectionId];
+                const groupStartMap = {};
+                const subGroupStartMap = {};
+                if (groups) {
+                    for (const group of groups) {
+                        if (group.subsectionKeys.length > 0) {
+                            groupStartMap[group.subsectionKeys[0]] = group.title;
+                        }
+                        if (group.subgroups) {
+                            for (const sg of group.subgroups) {
+                                if (sg.subsectionKeys.length > 0) {
+                                    subGroupStartMap[sg.subsectionKeys[0]] = sg.title;
+                                }
+                            }
+                            if (group.subgroups.length > 0 && group.subgroups[0].subsectionKeys.length > 0) {
+                                groupStartMap[group.subgroups[0].subsectionKeys[0]] = group.title;
                             }
                         }
-                        // The first subgroup's first key starts the parent group
-                        if (group.subgroups.length > 0 && group.subgroups[0].subsectionKeys.length > 0) {
-                            groupStartMap[group.subgroups[0].subsectionKeys[0]] = group.title;
-                        }
                     }
+                }
+
+                for (const [subId, sub] of Object.entries(section.subsections)) {
+                    if (groupStartMap[subId]) {
+                        html += `<div class="nav-item group-label">${groupStartMap[subId]}</div>`;
+                    }
+                    if (subGroupStartMap[subId]) {
+                        html += `<div class="nav-item sub-group-label">${subGroupStartMap[subId]}</div>`;
+                    }
+                    html += `<div class="nav-item subsection" onclick="navigateToSubsection('${sectionId}', '${subId}')">${sub.title}</div>`;
                 }
             }
 
-            for (const [subId, sub] of Object.entries(section.subsections)) {
-                if (groupStartMap[subId]) {
-                    html += `<div class="nav-item group-label">${groupStartMap[subId]}</div>`;
-                }
-                if (subGroupStartMap[subId]) {
-                    html += `<div class="nav-item sub-group-label">${subGroupStartMap[subId]}</div>`;
-                }
-                html += `<div class="nav-item subsection" onclick="navigateToSubsection('${sectionId}', '${subId}')">${sub.title}</div>`;
-            }
+            html += `</div>`;
         }
     }
 
     container.innerHTML = html;
+
+    // Scroll sidebar to show active section header
+    if (activeSectionId) {
+        const activeHeader = container.querySelector('.section-header.active-section');
+        if (activeHeader) {
+            activeHeader.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
 }
 
 // Show home view
 function showHome() {
+    currentSectionId = null;
     document.getElementById('home-view').style.display = 'block';
     document.getElementById('content-view').classList.remove('active');
+    renderNavigation(null);
+    updateHeaderLocation(null);
     closeSidebar();
 }
 
@@ -2066,18 +2245,14 @@ function navigateToSection(sectionId) {
     const section = guideContent[sectionId];
     if (!section) return;
 
+    currentSectionId = sectionId;
     document.getElementById('home-view').style.display = 'none';
     document.getElementById('content-view').classList.add('active');
-
-    // Build breadcrumb
-    document.getElementById('breadcrumb').innerHTML = `
-        <a href="#" onclick="showHome(); return false;">Home</a>
-        <span>\u203a</span>
-        <span>${section.title}</span>
-    `;
+    renderNavigation(sectionId);
 
     // Build content
     let html = `<div class="content-section"><h1>${section.title}</h1>`;
+    html += buildSectionTOC(sectionId);
 
     if (section.subsections) {
         // Build maps of subsectionKey -> group/sub-group title for headers
@@ -2132,6 +2307,7 @@ function navigateToSection(sectionId) {
 
     // Setup cross-references in new content
     setupCrossReferences();
+    updateHeaderLocation(sectionId);
     closeSidebar();
     window.scrollTo(0, 0);
 }
@@ -2141,16 +2317,132 @@ function navigateToSubsection(sectionId, subsectionId) {
     navigateToSection(sectionId);
 
     setTimeout(() => {
-        const element = document.getElementById(subsectionId);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        scrollToSubsection(subsectionId);
     }, 100);
 }
 
 // Toggle collapsible sections
 function toggleCollapsible(header) {
     header.classList.toggle('collapsed');
+}
+
+// Build section table of contents
+function buildSectionTOC(sectionId) {
+    const section = guideContent[sectionId];
+    if (!section || !section.subsections) return '';
+
+    const groups = sectionGroups[sectionId];
+    let tocBody = '';
+
+    if (groups && groups.length > 0) {
+        for (const group of groups) {
+            if (group.subgroups) {
+                tocBody += `<div class="toc-group-title">${group.title}</div>`;
+                for (const sg of group.subgroups) {
+                    tocBody += `<div class="toc-subgroup-title">${sg.title}</div>`;
+                    for (const key of sg.subsectionKeys) {
+                        const sub = section.subsections[key];
+                        if (sub) {
+                            tocBody += `<a class="toc-item toc-indented" onclick="scrollToSubsection('${key}')">${sub.title}</a>`;
+                        }
+                    }
+                }
+            } else {
+                tocBody += `<div class="toc-group-title">${group.title}</div>`;
+                for (const key of group.subsectionKeys) {
+                    const sub = section.subsections[key];
+                    if (sub) {
+                        tocBody += `<a class="toc-item" onclick="scrollToSubsection('${key}')">${sub.title}</a>`;
+                    }
+                }
+            }
+        }
+    } else {
+        // Flat list
+        for (const [subId, sub] of Object.entries(section.subsections)) {
+            tocBody += `<a class="toc-item" onclick="scrollToSubsection('${subId}')">${sub.title}</a>`;
+        }
+    }
+
+    return `<div class="section-toc" id="section-toc">
+        <div class="section-toc-header" onclick="toggleSectionTOC()">
+            <span>Table of Contents</span>
+            <span class="toc-toggle-icon">\u25bc</span>
+        </div>
+        <div class="section-toc-body">${tocBody}</div>
+    </div>`;
+}
+
+// Toggle section TOC collapse
+function toggleSectionTOC() {
+    const toc = document.getElementById('section-toc');
+    if (toc) toc.classList.toggle('toc-collapsed');
+}
+
+// Scroll to a subsection with offset for sticky header + search bar
+function scrollToSubsection(subsectionId) {
+    const element = document.getElementById(subsectionId);
+    if (!element) return;
+
+    // Expand the collapsible if it's collapsed
+    const header = element.querySelector('.collapsible-header');
+    if (header && header.classList.contains('collapsed')) {
+        header.classList.remove('collapsed');
+    }
+
+    const offset = 110; // floating header (44) + search bar (~66)
+    const top = element.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+}
+
+// Update floating header location text
+function updateHeaderLocation(sectionId, groupTitle) {
+    const el = document.getElementById('header-location');
+    if (!sectionId) {
+        el.innerHTML = "Chicago Housing Advocates' Guide";
+        return;
+    }
+    const section = guideContent[sectionId];
+    if (!section) return;
+    let text = section.title;
+    if (groupTitle) {
+        text += `<span class="header-sep">\u203a</span><span class="header-section-name">${groupTitle}</span>`;
+    }
+    el.innerHTML = text;
+}
+
+// Scroll spy: update header as user scrolls through group headers
+function setupScrollSpy() {
+    const mainContent = document.querySelector('.main-content');
+    mainContent.addEventListener('scroll', function() {
+        if (!currentSectionId) return;
+        const headers = document.querySelectorAll('.group-header');
+        if (headers.length === 0) return;
+        let currentGroup = null;
+        const offset = 120; // below floating header + search bar
+        for (const h of headers) {
+            const rect = h.getBoundingClientRect();
+            if (rect.top <= offset) {
+                currentGroup = h.textContent;
+            }
+        }
+        updateHeaderLocation(currentSectionId, currentGroup);
+    });
+    // Also listen on window scroll as fallback
+    window.addEventListener('scroll', function() {
+        if (!currentSectionId) return;
+        const headers = document.querySelectorAll('.group-header');
+        if (headers.length === 0) return;
+        let currentGroup = null;
+        const offset = 120;
+        for (const h of headers) {
+            const rect = h.getBoundingClientRect();
+            if (rect.top <= offset) {
+                currentGroup = h.textContent;
+            }
+        }
+        updateHeaderLocation(currentSectionId, currentGroup);
+    });
 }
 
 // Setup search functionality
